@@ -2,6 +2,7 @@ import copy
 
 from matplotlib.pyplot import imread
 from matplotlib.pyplot import imsave
+import numpy as np
 
 start_image = imread('image.bmp')
 # image = copy.deepcopy(imread('image.bmp'))  # начальная картинка
@@ -63,6 +64,40 @@ def print_header():
           f"{((width * height * 3 * 3) // 8) * 75 // 100} символов")
 
 
+def pixel(rgb):
+    return 0.299 * int(rgb[0]) + 0.587 * int(rgb[1]) + 0.114 * int(rgb[2])
+
+
+def get_MD(images):
+    maxx = 0
+    for image in images:
+        for i in range(width):
+            for j in range(height):
+                current = np.abs(pixel(start_image[i][j]) - pixel(image[i][j]))
+                if current > maxx:
+                    maxx = current
+    return maxx
+
+
+def get_CQ(images):
+    sum_CS = 0
+    sum_CC = 0
+    for image in images:
+        for i in range(width):
+            for j in range(height):
+                sum_CS += pixel(start_image[i][j]) * pixel(image[i][j])
+                sum_CC += pixel(start_image[i][j]) * pixel(start_image[i][j])
+    return sum_CS / sum_CC
+
+def get_GSSNR(images):
+
+
+
+def print_footer(images):
+    print(f"MD = {get_MD(images)}")
+    print(f"CQ = {get_CQ(images)}")
+
+
 def get_sequence():
     symbols = ['{:08b}'.format(symbol) for symbol in bytearray(message, 'utf-8')]
     return ''.join(symbols)
@@ -113,6 +148,8 @@ def main():
 
             embed_text_to_image(bitsList, percent, image)
             imsave(f'image{image_number}.bmp', image)
+
+    print_footer(images)
 
 
 if __name__ == '__main__':
