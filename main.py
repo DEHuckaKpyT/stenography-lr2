@@ -1,8 +1,8 @@
 import copy
 
+import numpy as np
 from matplotlib.pyplot import imread
 from matplotlib.pyplot import imsave
-import numpy as np
 
 start_image = imread('image.bmp')
 # image = copy.deepcopy(imread('image.bmp'))  # начальная картинка
@@ -89,13 +89,41 @@ def get_CQ(images):
                 sum_CC += pixel(start_image[i][j]) * pixel(start_image[i][j])
     return sum_CS / sum_CC
 
-def get_GSSNR(images):
 
+def get_GSSNR(images):
+    n = np.gcd(width, height)
+
+    for image in images:
+        sum1 = 0
+        sum2 = 0
+
+        for w in range(0, width, n):
+            for h in range(0, height, n):
+                c = 0
+                s = 0
+
+                for x in range(n):
+                    for y in range(n):
+                        width_x = w + x
+                        height_y = h + y
+
+                        c += pixel(start_image[width_x][height_y])
+                        s += pixel(image[width_x][height_y])
+
+                sigma1 = np.sqrt(((1 / n) * (c ** 2)) - (((1 / n) * c) ** 2))
+                sigma2 = np.sqrt(((1 / n) * (s ** 2)) - (((1 / n) * s) ** 2))
+
+                sum1 += sigma1 ** 2
+                sum2 += (sigma1 - sigma2) ** 2
+
+        gssnr = sum1 / sum2
+        print(f"gssnr = {gssnr}")
 
 
 def print_footer(images):
     print(f"MD = {get_MD(images)}")
     print(f"CQ = {get_CQ(images)}")
+    get_GSSNR(images)
 
 
 def get_sequence():
