@@ -1,10 +1,10 @@
 import copy
 
+import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.pyplot import imread
-from matplotlib.pyplot import imsave
+import xlsxwriter
 
-start_image = imread('image.bmp')
+start_image = plt.imread('image.bmp')
 # image = copy.deepcopy(imread('image.bmp'))  # начальная картинка
 with open('message.txt') as file:
     message = file.read()  # сообщение для шифрования
@@ -69,31 +69,36 @@ def pixel(rgb):
 
 
 def get_MD(images):
-    maxx = 0
-    for image in images:
+    maxx = [0 for i in range(len(images))]
+
+    for image_number in range(len(images)):
         for i in range(width):
             for j in range(height):
-                current = np.abs(pixel(start_image[i][j]) - pixel(image[i][j]))
-                if current > maxx:
-                    maxx = current
+                current = np.abs(pixel(start_image[i][j]) - pixel(images[image_number][i][j]))
+                if current > maxx[image_number]:
+                    maxx[image_number] = current
+
     return maxx
 
 
 def get_CQ(images):
-    sum_CS = 0
-    sum_CC = 0
-    for image in images:
+    sum_CS = [0 for i in range(len(images))]
+    sum_CC = [0 for i in range(len(images))]
+
+    for image_number in range(len(images)):
         for i in range(width):
             for j in range(height):
-                sum_CS += pixel(start_image[i][j]) * pixel(image[i][j])
-                sum_CC += pixel(start_image[i][j]) * pixel(start_image[i][j])
-    return sum_CS / sum_CC
+                sum_CS[image_number] += pixel(start_image[i][j]) * pixel(images[image_number][i][j])
+                sum_CC[image_number] += pixel(start_image[i][j]) * pixel(start_image[i][j])
+
+    return [sum_CS[i] / sum_CC[i] for i in range(len(images))]
 
 
 def get_GSSNR(images):
     n = np.gcd(width, height)
+    gssnr_list = []
 
-    for image in images:
+    for image_number in range(len(images)):
         sum1 = 0
         sum2 = 0
 
@@ -108,7 +113,7 @@ def get_GSSNR(images):
                         height_y = h + y
 
                         c += pixel(start_image[width_x][height_y])
-                        s += pixel(image[width_x][height_y])
+                        s += pixel(images[image_number][width_x][height_y])
 
                 sigma1 = np.sqrt(((1 / n) * (c ** 2)) - (((1 / n) * c) ** 2))
                 sigma2 = np.sqrt(((1 / n) * (s ** 2)) - (((1 / n) * s) ** 2))
@@ -117,13 +122,66 @@ def get_GSSNR(images):
                 sum2 += (sigma1 - sigma2) ** 2
 
         gssnr = sum1 / sum2
-        print(f"gssnr = {gssnr}")
+        gssnr_list.append(gssnr)
+
+    return gssnr_list
+
+
+def print_row(worksheet, row, values, name):
+    worksheet.write(row, 0, name)
+
+    for i in range(len(values)):
+        worksheet.write(row, i + 1, values[i])
 
 
 def print_footer(images):
-    print(f"MD = {get_MD(images)}")
-    print(f"CQ = {get_CQ(images)}")
-    get_GSSNR(images)
+    mds = get_MD(images)
+    cqs = get_CQ(images)
+    gssnrs = get_GSSNR(images)
+
+    print(f"MD = {mds}")
+    print(f"CQ = {cqs}")
+    print(f"GSSNR = {gssnrs}")
+
+    workbook = xlsxwriter.Workbook('output.xlsx')
+    worksheet = workbook.add_worksheet()
+    print_row(worksheet, 0, mds, "MD")
+    print_row(worksheet, 1, cqs, "CQ")
+    print_row(worksheet, 2, gssnrs, "GSSNR")
+    workbook.close()
+
+    plt.rcParams["figure.autolayout"] = True
+    plt.title("Line graph")
+    x = np.array([10, 20, 30, 50, 75])
+    fig, axs = plt.subplots(3, 3)
+
+    axs[0, 0].plot(x, [mds[0], mds[3], mds[6], mds[9], mds[12]], 'tab:orange')
+    axs[0, 0].set_title('MD при 1 bit')
+    axs[0, 1].plot(x, [mds[1], mds[4], mds[7], mds[10], mds[13]], 'tab:orange')
+    axs[0, 1].set_title('MD при 2 bit')
+    axs[0, 2].plot(x, [mds[2], mds[5], mds[8], mds[11], mds[14]], 'tab:orange')
+    axs[0, 2].set_title('MD при 3 bit')
+
+    axs[1, 0].plot(x, [cqs[0], cqs[3], cqs[6], cqs[9], cqs[12]], 'tab:orange')
+    axs[1, 0].set_title('CQ при 1 bit')
+    axs[1, 1].plot(x, [cqs[1], cqs[4], cqs[7], cqs[10], cqs[13]], 'tab:orange')
+    axs[1, 1].set_title('CQ при 2 bit')
+    axs[1, 2].plot(x, [cqs[2], cqs[5], cqs[8], cqs[11], cqs[14]], 'tab:orange')
+    axs[1, 2].set_title('CQ при 3 bit')
+
+    axs[2, 0].plot(x, [gssnrs[0], gssnrs[3], gssnrs[6], gssnrs[9], gssnrs[12]], 'tab:orange')
+    axs[2, 0].set_title('GSSNR при 1 bit')
+    axs[2, 1].plot(x, [gssnrs[1], gssnrs[4], gssnrs[7], gssnrs[10], gssnrs[13]], 'tab:orange')
+    axs[2, 1].set_title('GSSNR при 2 bit')
+    axs[2, 2].plot(x, [gssnrs[2], gssnrs[5], gssnrs[8], gssnrs[11], gssnrs[14]], 'tab:orange')
+    axs[2, 2].set_title('GSSNR при 3 bit')
+
+    plt.show()
+
+
+
+
+
 
 
 def get_sequence():
@@ -165,7 +223,7 @@ def main():
     bits = [[7], [6, 7], [5, 6, 7]]  # номера битов для замены; отсчёт от нуля
     percents = [10, 20, 30, 50, 75]
 
-    images = [copy.deepcopy(imread('image.bmp')) for _ in range(15)]
+    images = [copy.deepcopy(plt.imread('image.bmp')) for _ in range(15)]
 
     image_number = 0
     for percent in percents:
@@ -175,7 +233,7 @@ def main():
             print(f"Обрабатывается картинка {image_number}")
 
             embed_text_to_image(bitsList, percent, image)
-            imsave(f'image{image_number}.bmp', image)
+            plt.imsave(f'image{image_number}.bmp', image)
 
     print_footer(images)
 
