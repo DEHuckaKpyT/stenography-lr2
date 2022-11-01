@@ -120,6 +120,17 @@ def get_NAD(images):
     return [sum_CS[i] / sum_C[i] for i in range(len(images))]
 
 
+def get_Lp(images):
+    summ = [0 for i in range(len(images))]
+
+    for image_number in range(len(images)):
+        for i in range(width):
+            for j in range(height):
+                summ[image_number] += (pixel(start_image[i][j]) - pixel(images[image_number][i][j])) ** 2
+
+    return [summ[i] ** 0.5 for i in range(len(images))]
+
+
 def get_GSSNR(images):
     n = np.gcd(width, height)
     gssnr_list = []
