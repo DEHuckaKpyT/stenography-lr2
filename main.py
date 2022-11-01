@@ -94,6 +94,32 @@ def get_CQ(images):
     return [sum_CS[i] / sum_CC[i] for i in range(len(images))]
 
 
+def get_SNR(images):
+    sum_CS = [0 for i in range(len(images))]
+    sum_CC = [0 for i in range(len(images))]
+
+    for image_number in range(len(images)):
+        for i in range(width):
+            for j in range(height):
+                sum_CS[image_number] += (pixel(start_image[i][j]) - pixel(images[image_number][i][j])) ** 2
+                sum_CC[image_number] += pixel(start_image[i][j]) ** 2
+
+    return [sum_CS[i] / sum_CC[i] for i in range(len(images))]
+
+
+def get_NAD(images):
+    sum_CS = [0 for i in range(len(images))]
+    sum_C = [0 for i in range(len(images))]
+
+    for image_number in range(len(images)):
+        for i in range(width):
+            for j in range(height):
+                sum_CS[image_number] += np.abs(pixel(start_image[i][j]) - pixel(images[image_number][i][j]))
+                sum_C[image_number] += pixel(start_image[i][j])
+
+    return [sum_CS[i] / sum_C[i] for i in range(len(images))]
+
+
 def get_GSSNR(images):
     n = np.gcd(width, height)
     gssnr_list = []
@@ -135,6 +161,8 @@ def print_row(worksheet, row, values, name):
 
 
 def print_footer(images):
+    # snrs = get_SNR(images)
+    # nads = get_NAD(images)
     mds = get_MD(images)
     cqs = get_CQ(images)
     gssnrs = get_GSSNR(images)
@@ -151,42 +179,36 @@ def print_footer(images):
     workbook.close()
 
     plt.rcParams["figure.autolayout"] = True
-    plt.title("Line graph")
     x = np.array([10, 20, 30, 50, 75])
     fig, axs = plt.subplots(3, 3)
 
-    axs[0, 0].plot(x, [mds[0], mds[3], mds[6], mds[9], mds[12]], marker='o', color='b', markevery=x)
+    axs[0, 0].plot(x, [mds[0], mds[3], mds[6], mds[9], mds[12]], marker='o', color='b')  # , markevery=x)
     axs[0, 0].set_title('MD при 1 bit')
-    axs[0, 1].plot(x, [mds[1], mds[4], mds[7], mds[10], mds[13]], marker='o', color='b', markevery=x)
+    axs[0, 1].plot(x, [mds[1], mds[4], mds[7], mds[10], mds[13]], marker='o', color='b')  # , markevery=x)
     axs[0, 1].set_title('MD при 2 bit')
-    axs[0, 2].plot(x, [mds[2], mds[5], mds[8], mds[11], mds[14]], marker='o', color='b', markevery=x)
+    axs[0, 2].plot(x, [mds[2], mds[5], mds[8], mds[11], mds[14]], marker='o', color='b')  # , markevery=x)
     axs[0, 2].set_title('MD при 3 bit')
 
-    axs[1, 0].plot(x, [cqs[0], cqs[3], cqs[6], cqs[9], cqs[12]], marker='o', color='b', markevery=x)
+    axs[1, 0].plot(x, [cqs[0], cqs[3], cqs[6], cqs[9], cqs[12]], marker='o', color='b')  # , markevery=x)
     axs[1, 0].set_title('CQ при 1 bit')
-    axs[1, 1].plot(x, [cqs[1], cqs[4], cqs[7], cqs[10], cqs[13]], marker='o', color='b', markevery=x)
+    axs[1, 1].plot(x, [cqs[1], cqs[4], cqs[7], cqs[10], cqs[13]], marker='o', color='b')  # , markevery=x)
     axs[1, 1].set_title('CQ при 2 bit')
-    axs[1, 2].plot(x, [cqs[2], cqs[5], cqs[8], cqs[11], cqs[14]], marker='o', color='b', markevery=x)
+    axs[1, 2].plot(x, [cqs[2], cqs[5], cqs[8], cqs[11], cqs[14]], marker='o', color='b')  # , markevery=x)
     axs[1, 2].set_title('CQ при 3 bit')
 
-    axs[2, 0].plot(x, [gssnrs[0], gssnrs[3], gssnrs[6], gssnrs[9], gssnrs[12]], marker='o', color='b', markevery=x)
+    axs[2, 0].plot(x, [gssnrs[0], gssnrs[3], gssnrs[6], gssnrs[9], gssnrs[12]], marker='o', color='b')  # , markevery=x)
     axs[2, 0].set_title('GSSNR при 1 bit')
-    axs[2, 1].plot(x, [gssnrs[1], gssnrs[4], gssnrs[7], gssnrs[10], gssnrs[13]], marker='o', color='b', markevery=x)
+    axs[2, 1].plot(x, [gssnrs[1], gssnrs[4], gssnrs[7], gssnrs[10], gssnrs[13]], marker='o', color='b')  # , markevery=x)
     axs[2, 1].set_title('GSSNR при 2 bit')
-    axs[2, 2].plot(x, [gssnrs[2], gssnrs[5], gssnrs[8], gssnrs[11], gssnrs[14]], marker='o', color='b', markevery=x)
+    axs[2, 2].plot(x, [gssnrs[2], gssnrs[5], gssnrs[8], gssnrs[11], gssnrs[14]], marker='o', color='b')  # , markevery=x)
     axs[2, 2].set_title('GSSNR при 3 bit')
 
     plt.show()
-    #ax.annotate('local max', xy=(3, 1),  xycoords='data',
-            # xytext=(0.8, 0.95), textcoords='axes fraction',
-            # arrowprops=dict(facecolor='black', shrink=0.05),
-            # horizontalalignment='right', verticalalignment='top',
-            # )
-
-
-
-
-
+    # ax.annotate('local max', xy=(3, 1),  xycoords='data',
+    # xytext=(0.8, 0.95), textcoords='axes fraction',
+    # arrowprops=dict(facecolor='black', shrink=0.05),
+    # horizontalalignment='right', verticalalignment='top',
+    # )
 
 
 def get_sequence():
