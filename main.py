@@ -19,49 +19,49 @@ def print_header():
     print(f"Ширина = {height} пикселей")
     print(f"Максимальный встраиваемый объём информации и максимальное встраиваемое число символов:")
     print(f"Если используются последний бит и все три компоненты цвета: "
-          f"{(width * height * 3)} бит информации, "
-          f"{(width * height * 3) // 8} символов")
+          f"{width} * {height} * 1 * 3 = {(width * height * 3)} бит информации, "
+          f"{width} * {height} * 1 * 3 / 8 = {(width * height * 3) // 8} символов")
     print(f"Если используются два последних бита и все три компоненты цвета: "
-          f"{(width * height * 2 * 3)} бит информации, "
-          f"{(width * height * 2 * 3) // 8} символов")
+          f"{width} * {height} * 2 * 3 = {(width * height * 2 * 3)} бит информации, "
+          f"{width} * {height} * 2 * 3 / 8 = {(width * height * 2 * 3) // 8} символов")
     print(f"Если используются три последних младших бита и все три компоненты цвета: "
-          f"{(width * height * 3 * 3)} бит информации, "
-          f"{(width * height * 3 * 3) // 8} символов")
+          f"{width} * {height} * 3 * 3 = {(width * height * 3 * 3)} бит информации, "
+          f"{width} * {height} * 3 * 3 / 8 = {(width * height * 3 * 3) // 8} символов")
     print()
     print(f"Последний бит, три компоненты цвета, 10% от макс объёма: "
-          f"{((width * height * 3) // 8) * 10 // 100} символов")
+          f"({width} * {height} * 1 * 3 / 8) * 0.10 = {((width * height * 3) // 8) * 10 // 100} символов")
     print(f"Два последних бита, три компоненты цвета, 10% от макс объёма: "
-          f"{((width * height * 2 * 3) // 8) * 10 // 100} символов")
+          f"({width} * {height} * 2 * 3 / 8) * 0.10 = {((width * height * 2 * 3) // 8) * 10 // 100} символов")
     print(f"Три последних бита, три компоненты цвета, 10% от макс объёма: "
-          f"{((width * height * 3 * 3) // 8) * 10 // 100} символов")
+          f"({width} * {height} * 3 * 3 / 8) * 0.10 = {((width * height * 3 * 3) // 8) * 10 // 100} символов")
 
     print(f"Последний бит, три компоненты цвета, 20% от макс объёма: "
-          f"{((width * height * 3) // 8) * 20 // 100} символов")
+          f"({width} * {height} * 1 * 3 / 8) * 0.20 = {((width * height * 3) // 8) * 20 // 100} символов")
     print(f"Два последних бита, три компоненты цвета, 20% от макс объёма: "
-          f"{((width * height * 2 * 3) // 8) * 20 // 100} символов")
+          f"({width} * {height} * 2 * 3 / 8) * 0.20 = {((width * height * 2 * 3) // 8) * 20 // 100} символов")
     print(f"Три последних бита, три компоненты цвета, 20% от макс объёма: "
-          f"{((width * height * 3 * 3) // 8) * 20 // 100} символов")
+          f"({width} * {height} * 3 * 3 / 8) * 0.20 = {((width * height * 3 * 3) // 8) * 20 // 100} символов")
 
     print(f"Последний бит, три компоненты цвета, 30% от макс объёма: "
-          f"{((width * height * 3) // 8) * 30 // 100} символов")
+          f"({width} * {height} * 1 * 3 / 8) * 0.30 = {((width * height * 3) // 8) * 30 // 100} символов")
     print(f"Два последних бита, три компоненты цвета, 30% от макс объёма: "
-          f"{((width * height * 2 * 3) // 8) * 30 // 100} символов")
+          f"({width} * {height} * 2 * 3 / 8) * 0.30 = {((width * height * 2 * 3) // 8) * 30 // 100} символов")
     print(f"Три последних бита, три компоненты цвета, 30% от макс объёма: "
-          f"{((width * height * 3 * 3) // 8) * 30 // 100} символов")
+          f"({width} * {height} * 3 * 3 / 8) * 0.30 = {((width * height * 3 * 3) // 8) * 30 // 100} символов")
 
     print(f"Последний бит, три компоненты цвета, 50% от макс объёма: "
-          f"{((width * height * 3) // 8) * 50 // 100} символов")
+          f"({width} * {height} * 1 * 3 / 8) * 0.50 = {((width * height * 3) // 8) * 50 // 100} символов")
     print(f"Два последних бита, три компоненты цвета, 50% от макс объёма: "
-          f"{((width * height * 2 * 3) // 8) * 50 // 100} символов")
+          f"({width} * {height} * 2 * 3 / 8) * 0.50 = {((width * height * 2 * 3) // 8) * 50 // 100} символов")
     print(f"Три последних бита, три компоненты цвета, 50% от макс объёма: "
-          f"{((width * height * 3 * 3) // 8) * 50 // 100} символов")
+          f"({width} * {height} * 3 * 3 / 8) * 0.50 = {((width * height * 3 * 3) // 8) * 50 // 100} символов")
 
     print(f"Последний бит, три компоненты цвета, 75% от макс объёма: "
-          f"{((width * height * 3) // 8) * 75 // 100} символов")
+          f"({width} * {height} * 1 * 3 / 8) * 0.75 = {((width * height * 3) // 8) * 75 // 100} символов")
     print(f"Два последних бита, три компоненты цвета, 75% от макс объёма: "
-          f"{((width * height * 2 * 3) // 8) * 75 // 100} символов")
+          f"({width} * {height} * 2 * 3 / 8) * 0.75 = {((width * height * 2 * 3) // 8) * 75 // 100} символов")
     print(f"Три последних бита, три компоненты цвета, 75% от макс объёма: "
-          f"{((width * height * 3 * 3) // 8) * 75 // 100} символов")
+          f"({width} * {height} * 3 * 3 / 8) * 0.75 = {((width * height * 3 * 3) // 8) * 75 // 100} символов")
 
 
 def pixel(rgb):
@@ -131,6 +131,17 @@ def get_Lp(images):
     return [summ[i] ** 0.5 for i in range(len(images))]
 
 
+def get_MSE(images):
+    sum_CS = [0 for i in range(len(images))]
+
+    for image_number in range(len(images)):
+        for i in range(width):
+            for j in range(height):
+                sum_CS[image_number] += (pixel(start_image[i][j]) - pixel(images[image_number][i][j])) ** 2
+
+    return [sum_CS[i] / width / height for i in range(len(images))]
+
+
 def get_GSSNR(images):
     n = np.gcd(width, height)
     gssnr_list = []
@@ -173,19 +184,20 @@ def print_row(worksheet, row, values, name):
 
 def print_footer(images):
     # snrs = get_SNR(images)
-    # nads = get_NAD(images)
-    mds = get_MD(images)
-    cqs = get_CQ(images)
+    nads = get_NAD(images)
+    # mds = get_MD(images)
+    mses = get_MSE(images)
+    # cqs = get_CQ(images)
     gssnrs = get_GSSNR(images)
 
-    print(f"MD = {mds}")
-    print(f"CQ = {cqs}")
+    print(f"MSE = {mses}")
+    print(f"NAD = {nads}")
     print(f"GSSNR = {gssnrs}")
 
     workbook = xlsxwriter.Workbook('output.xlsx')
     worksheet = workbook.add_worksheet()
-    print_row(worksheet, 0, mds, "MD")
-    print_row(worksheet, 1, cqs, "CQ")
+    print_row(worksheet, 0, mses, "MSE")
+    print_row(worksheet, 1, nads, "NAD")
     print_row(worksheet, 2, gssnrs, "GSSNR")
     workbook.close()
 
@@ -193,19 +205,19 @@ def print_footer(images):
     x = np.array([10, 20, 30, 50, 75])
     fig, axs = plt.subplots(3, 3)
 
-    axs[0, 0].plot(x, [mds[0], mds[3], mds[6], mds[9], mds[12]], marker='o', color='b')  # , markevery=x)
-    axs[0, 0].set_title('MD при 1 bit')
-    axs[0, 1].plot(x, [mds[1], mds[4], mds[7], mds[10], mds[13]], marker='o', color='b')  # , markevery=x)
-    axs[0, 1].set_title('MD при 2 bit')
-    axs[0, 2].plot(x, [mds[2], mds[5], mds[8], mds[11], mds[14]], marker='o', color='b')  # , markevery=x)
-    axs[0, 2].set_title('MD при 3 bit')
+    axs[0, 0].plot(x, [mses[0], mses[3], mses[6], mses[9], mses[12]], marker='o', color='b')  # , markevery=x)
+    axs[0, 0].set_title('MSE при 1 bit')
+    axs[0, 1].plot(x, [mses[1], mses[4], mses[7], mses[10], mses[13]], marker='o', color='b')  # , markevery=x)
+    axs[0, 1].set_title('MSE при 2 bit')
+    axs[0, 2].plot(x, [mses[2], mses[5], mses[8], mses[11], mses[14]], marker='o', color='b')  # , markevery=x)
+    axs[0, 2].set_title('MSE при 3 bit')
 
-    axs[1, 0].plot(x, [cqs[0], cqs[3], cqs[6], cqs[9], cqs[12]], marker='o', color='b')  # , markevery=x)
-    axs[1, 0].set_title('CQ при 1 bit')
-    axs[1, 1].plot(x, [cqs[1], cqs[4], cqs[7], cqs[10], cqs[13]], marker='o', color='b')  # , markevery=x)
-    axs[1, 1].set_title('CQ при 2 bit')
-    axs[1, 2].plot(x, [cqs[2], cqs[5], cqs[8], cqs[11], cqs[14]], marker='o', color='b')  # , markevery=x)
-    axs[1, 2].set_title('CQ при 3 bit')
+    axs[1, 0].plot(x, [nads[0], nads[3], nads[6], nads[9], nads[12]], marker='o', color='b')  # , markevery=x)
+    axs[1, 0].set_title('NAD при 1 bit')
+    axs[1, 1].plot(x, [nads[1], nads[4], nads[7], nads[10], nads[13]], marker='o', color='b')  # , markevery=x)
+    axs[1, 1].set_title('NAD при 2 bit')
+    axs[1, 2].plot(x, [nads[2], nads[5], nads[8], nads[11], nads[14]], marker='o', color='b')  # , markevery=x)
+    axs[1, 2].set_title('NAD при 3 bit')
 
     axs[2, 0].plot(x, [gssnrs[0], gssnrs[3], gssnrs[6], gssnrs[9], gssnrs[12]], marker='o', color='b')  # , markevery=x)
     axs[2, 0].set_title('GSSNR при 1 bit')
